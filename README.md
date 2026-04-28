@@ -30,3 +30,4 @@ infrastructure/
 ```
 
 레이어 규칙은 `CLAUDE.md` 참조.
+프로젝트 OKR은 [`PromptEnglish-backend/docs/OKR.md`](../PromptEnglish-backend/docs/OKR.md) 참조.
