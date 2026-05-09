@@ -16,6 +16,7 @@ import type { Feedback } from "@/features/feedback/domain/model";
 
 type Props = {
   feedback: Feedback;
+  onAskQuestion?: (feedbackId: string) => void;
 };
 
 const CATEGORY_STYLE: Record<Feedback["category"], string> = {
@@ -30,7 +31,7 @@ const SEVERITY_LABEL: Record<Feedback["severity"], string> = {
   low: "약",
 };
 
-export function FeedbackCard({ feedback }: Props) {
+export function FeedbackCard({ feedback, onAskQuestion }: Props) {
   return (
     <div className={`rounded border ${CATEGORY_STYLE[feedback.category]} p-3 text-xs`}>
       <div className="mb-1 flex items-center gap-2 text-[10px] uppercase">
@@ -59,6 +60,17 @@ export function FeedbackCard({ feedback }: Props) {
               {a}
             </span>
           ))}
+        </div>
+      )}
+      {onAskQuestion && (
+        <div className="mt-2 flex justify-end">
+          <button
+            type="button"
+            onClick={() => onAskQuestion(feedback.id)}
+            className="rounded bg-white/70 px-2 py-0.5 text-[10px] hover:bg-white"
+          >
+            💬 질문하기
+          </button>
         </div>
       )}
     </div>

@@ -1,0 +1,29 @@
+node_modules
+.next
+out
+dist
+build
+
+# 환경 (빌드 인자로 주입)
+.env*
+!.env.example
+
+# 테스트/캐시
+coverage
+.cache
+.turbo
+
+# IDE/시스템
+.vscode
+.idea
+.DS_Store
+*.swp
+
+# git
+.git
+.gitignore
+.github
+
+# doc
+*.md
+!README.md

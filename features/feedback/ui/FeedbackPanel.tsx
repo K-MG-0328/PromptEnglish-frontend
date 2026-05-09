@@ -9,8 +9,10 @@
  * 기술 선택:
  *   - 메인 대화와 분리된 영역(데스크탑/iPad 3 영역 중 하나).
  *   - 추출 중 상태/에러는 props로 받아 표시.
- *   - 빈 상태는 "메시지를 입력하면 피드백이 표시됩니다" 안내.
+ *   - emptyFallback 주어지면 "피드백 0건"일 때 그 ReactNode를 표시 (LearningInfo 통합용).
  */
+
+import type { ReactNode } from "react";
 
 import type { Feedback } from "@/features/feedback/domain/model";
 import { FeedbackCard } from "./FeedbackCard";
@@ -20,6 +22,8 @@ type Props = {
   extracting: boolean;
   error: string | null;
   hasUserMessage: boolean;
+  onAskQuestion?: (feedbackId: string) => void;
+  emptyFallback?: ReactNode;
 };
 
 export function FeedbackPanel({
@@ -27,7 +31,12 @@ export function FeedbackPanel({
   extracting,
   error,
   hasUserMessage,
+  onAskQuestion,
+  emptyFallback,
 }: Props) {
+  const noFeedbacks = !extracting && feedbacks.length === 0;
+  const showFallback = noFeedbacks && emptyFallback !== undefined;
+
   return (
     <aside className="flex h-full flex-col gap-2 border-l border-gray-200 bg-gray-50 p-4">
       <header className="flex items-baseline justify-between">
@@ -48,16 +57,18 @@ export function FeedbackPanel({
           </div>
         )}
 
-        {!extracting && feedbacks.length === 0 && (
+        {showFallback ? (
+          emptyFallback
+        ) : noFeedbacks ? (
           <div className="grid h-full place-items-center text-center text-xs opacity-50">
             {hasUserMessage
               ? "이 메시지엔 피드백이 없습니다."
               : "메시지를 입력하면 피드백이 표시됩니다."}
           </div>
-        )}
+        ) : null}
 
         {feedbacks.map((fb) => (
-          <FeedbackCard key={fb.id} feedback={fb} />
+          <FeedbackCard key={fb.id} feedback={fb} onAskQuestion={onAskQuestion} />
         ))}
       </div>
     </aside>
